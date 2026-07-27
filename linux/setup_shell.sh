@@ -95,3 +95,32 @@ if [ "$SHELL" != "$(which zsh)" ]; then
 fi
 
 log_success "Shell configuration complete! Restart your terminal or run zsh to apply changes."
+
+curl "https://raw.githubusercontent.com/0RB1T4L-dev/setup-scripts/refs/heads/main/linux/.p10k.zsh" > ~/.p10k.zsh
+curl "https://raw.githubusercontent.com/0RB1T4L-dev/setup-scripts/refs/heads/main/linux/.zshrc" > ~/.zshrc
+
+log_info "Installing Python utils (pyenv and pipx)"
+
+if command -v pyenv >/dev/null 2>&1; then
+    log_info "pyenv is already installed. Skipping."
+else
+    curl https://pyenv.run | bash
+fi
+
+if command -v pipx >/dev/null 2>&1; then
+    echo "pipx is already installed. Skipping."
+else
+    sudo apt install -y pipx
+    pipx ensurepath
+
+log_success "Python Utils installed"
+
+log_info "Installing pipx Tools"
+
+pipx install certipy-ad
+pipx install impacket
+pipx install netexec
+pipx install sqlmap
+pipx install penelope-shell-handler
+
+log_success "Tools installed. Finished"
