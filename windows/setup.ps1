@@ -43,6 +43,14 @@ if ($installed_fonts.Contains("Meslo")) {
     oh-my-posh font install meslo
 }
 
+Write-Host "Creating POSH Config directory at $HOME\.config\posh"
+
+New-Item -ItemType Directory -Path "$HOME\.config\posh\images" -Force | Out-Null
+
+Write-Host "Downloading Background Image for Terminal"
+
+curl.exe -L -s -o "$HOME\.config\posh\images\gargantua-terminal-background.jpg" "https://raw.githubusercontent.com/0RB1T4L-dev/setup-scripts/refs/heads/main/windows/assets/gargantua-terminal-background.jpg"
+
 # Trying to find the installed Microsoft Terminal in order to automatically configure the Powershell 7 profile and setting it as default.
 
 $package = Get-AppxPackage |
@@ -91,6 +99,12 @@ if ($null -eq $ps_profile.font) {
 
 # Safely set defaultProfile
 $settings.defaultProfile = "$($ps_profile.guid)"
+
+# Set background image and colorScheme
+$settings | Add-Member -MemberType NoteProperty -Name backgroundImage -Value (Join-Path $HOME ".config/posh/images/gargantua-terminal-background.jpg") -Force
+$settings | Add-Member -MemberType NoteProperty -Name backgroundImageOpacity -Value 0.25 -Force
+$settings | Add-Member -MemberType NoteProperty -Name backgroundImageStretchMode -Value "fill" -Force
+$settings | Add-Member -MemberType NoteProperty -Name colorScheme -Value "One Half Dark" -Force
 
 # Persist to disk
 $settings |
@@ -169,11 +183,11 @@ if (Test-Path $HOME\.config\powershell\user_profile.ps1) {
     Write-Host "    [*] Powershell User Profile does not exist. Downloading..."
 }
 
-curl.exe -L -s -o "$HOME\.config\powershell\user_profile.ps1" "https://raw.githubusercontent.com/0RB1T4L-dev/setup-scripts/refs/heads/main/windows/user_profile.ps1"
+curl.exe -L -s -o "$HOME\.config\powershell\user_profile.ps1" "https://raw.githubusercontent.com/0RB1T4L-dev/setup-scripts/refs/heads/main/windows/assets/user_profile.ps1"
 
 Write-Host "Setting up Themes Directory in User Home Directory"
 New-Item -ItemType Directory -Path "$HOME\.config\posh\themes" -Force | Out-Null
 
 Write-Host "Downloading powerlevel10k_rainbow.omp.json"
 Remove-Item $HOME\.config\posh\themes\powerlevel10k_rainbow.omp.json
-curl.exe -L -s -o "$HOME\.config\posh\themes\powerlevel10k_rainbow.omp.json" "https://raw.githubusercontent.com/0RB1T4L-dev/setup-scripts/refs/heads/main/windows/powerlevel10k_rainbow.omp.json"
+curl.exe -L -s -o "$HOME\.config\posh\themes\powerlevel10k_rainbow.omp.json" "https://raw.githubusercontent.com/0RB1T4L-dev/setup-scripts/refs/heads/main/windows/assets/powerlevel10k_rainbow.omp.json"
