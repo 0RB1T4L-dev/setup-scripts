@@ -160,16 +160,14 @@ if (Test-Path $HOME\.config\powershell\user_profile.ps1) {
 
     if ($confirmation -eq "y") {
         Write-Host "    Continuing..."
+        Remove-Item $HOME\.config\powershell\user_profile.ps1
     } else {
         Write-Host "    Operation cancelled."
         exit
     }
 } else {
-    Write-Host "    [*] Powershell User Profile does not exist. Creating..."
-    New-Item -Path $HOME\.config\powershell\user_profile.ps1 -Type File -Force
+    Write-Host "    [*] Powershell User Profile does not exist. Downloading..."
 }
-
-Write-Host "Downloading user_profile.ps1"
 
 curl.exe -L -s -o "$HOME\.config\powershell\user_profile.ps1" "https://raw.githubusercontent.com/0RB1T4L-dev/setup-scripts/refs/heads/main/windows/user_profile.ps1"
 
@@ -177,5 +175,5 @@ Write-Host "Setting up Themes Directory in User Home Directory"
 New-Item -ItemType Directory -Path "$HOME\.config\posh\themes" -Force | Out-Null
 
 Write-Host "Downloading powerlevel10k_rainbow.omp.json"
-
+Remove-Item $HOME\.config\posh\themes\powerlevel10k_rainbow.omp.json
 curl.exe -L -s -o "$HOME\.config\posh\themes\powerlevel10k_rainbow.omp.json" "https://raw.githubusercontent.com/0RB1T4L-dev/setup-scripts/refs/heads/main/windows/powerlevel10k_rainbow.omp.json"
