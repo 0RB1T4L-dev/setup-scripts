@@ -97,14 +97,14 @@ if ($null -eq $ps_profile.font) {
     $ps_profile.font | Add-Member -NotePropertyName 'face' -NotePropertyValue "MesloLGL Nerd Font" -Force
 }
 
+# Set background image and colorScheme
+$ps_profile | Add-Member -MemberType NoteProperty -Name backgroundImage -Value (Join-Path $HOME ".config/posh/images/gargantua-terminal-background.jpg") -Force
+$ps_profile | Add-Member -MemberType NoteProperty -Name backgroundImageOpacity -Value 0.25 -Force
+$ps_profile | Add-Member -MemberType NoteProperty -Name backgroundImageStretchMode -Value "fill" -Force
+$ps_profile | Add-Member -MemberType NoteProperty -Name colorScheme -Value "One Half Dark" -Force
+
 # Safely set defaultProfile
 $settings.defaultProfile = "$($ps_profile.guid)"
-
-# Set background image and colorScheme
-$settings | Add-Member -MemberType NoteProperty -Name backgroundImage -Value (Join-Path $HOME ".config/posh/images/gargantua-terminal-background.jpg") -Force
-$settings | Add-Member -MemberType NoteProperty -Name backgroundImageOpacity -Value 0.25 -Force
-$settings | Add-Member -MemberType NoteProperty -Name backgroundImageStretchMode -Value "fill" -Force
-$settings | Add-Member -MemberType NoteProperty -Name colorScheme -Value "One Half Dark" -Force
 
 # Persist to disk
 $settings |
