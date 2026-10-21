@@ -1,6 +1,6 @@
 # Prompt
 Import-Module posh-git
-oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\powerlevel10k_rainbow.omp.json" | Invoke-Expression
+oh-my-posh init pwsh --config "$HOME\.config\posh\themes\powerlevel10k_rainbow.omp.json" | Invoke-Expression
 
 # Terminal Icons
 Import-Module -Name Terminal-Icons

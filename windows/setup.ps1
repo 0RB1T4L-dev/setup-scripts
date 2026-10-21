@@ -147,6 +147,7 @@ if (Test-Path $PROFILE) {
     Write-Host "    [OK] Powershell Profile already exists"
 } else {
     Write-Host "    [*] Powershell Profile does not exist. Creating..."
+    Write-Host "    "
     New-Item -Path $PROFILE -Type File -Force
 }
 
@@ -155,10 +156,9 @@ Add-Content -Path $PROFILE -Value '. "$HOME\.config\powershell\user_profile.ps1"
 Write-Host "Check if Powershell User Profile exists"
 
 if (Test-Path $HOME\.config\powershell\user_profile.ps1) {
-    Write-Host "    [WARN] Powershell User Profile already exists"
-    $confirmation = Read-Host " Do you want to overwrite the current Powershell User Profile? (Y/N)"
+    $confirmation = Read-Host "    [WARN] Powershell User Profile already exists. Do you want to overwrite it? (y/n)"
 
-    if ($confirmation -eq "Y") {
+    if ($confirmation -eq "y") {
         Write-Host "    Continuing..."
     } else {
         Write-Host "    Operation cancelled."
@@ -171,11 +171,11 @@ if (Test-Path $HOME\.config\powershell\user_profile.ps1) {
 
 Write-Host "Downloading user_profile.ps1"
 
-curl.exe -L -o "$HOME\.config\powershell\user_profile.ps1" "https://raw.githubusercontent.com/0RB1T4L-dev/setup-scripts/refs/heads/main/windows/user_profile.ps1"
+curl.exe -L -s -o "$HOME\.config\powershell\user_profile.ps1" "https://raw.githubusercontent.com/0RB1T4L-dev/setup-scripts/refs/heads/main/windows/user_profile.ps1"
 
 Write-Host "Setting up Themes Directory in User Home Directory"
-New-Item -ItemType Directory -Path "$HOME/.config/posh/themes" -Force | Out-Null
+New-Item -ItemType Directory -Path "$HOME\.config\posh\themes" -Force | Out-Null
 
 Write-Host "Downloading powerlevel10k_rainbow.omp.json"
 
-curl.exe -L -o "$HOME\scoop\apps\oh-my-posh\current\themes\" "https://raw.githubusercontent.com/0RB1T4L-dev/setup-scripts/refs/heads/main/windows/powerlevel10k_rainbow.omp.json"
+curl.exe -L -s -o "$HOME\.config\posh\themes\powerlevel10k_rainbow.omp.json" "https://raw.githubusercontent.com/0RB1T4L-dev/setup-scripts/refs/heads/main/windows/powerlevel10k_rainbow.omp.json"
