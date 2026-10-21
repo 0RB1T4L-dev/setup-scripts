@@ -97,11 +97,43 @@ if ($null -eq $ps_profile.font) {
     $ps_profile.font | Add-Member -NotePropertyName 'face' -NotePropertyValue "MesloLGL Nerd Font" -Force
 }
 
+# Adding Custom Gargantua Theme
+
+$newScheme = @'
+{
+    "background": "#0B0D13",
+    "black": "#141821",
+    "blue": "#0284C7",
+    "brightBlack": "#4A5568",
+    "brightBlue": "#4BCFFA",
+    "brightCyan": "#70A1FF",
+    "brightGreen": "#2ED573",
+    "brightPurple": "#A55EEA",
+    "brightRed": "#FF6B6B",
+    "brightWhite": "#FFFFFF",
+    "brightYellow": "#FFD32A",
+    "cursorColor": "#F59E0B",
+    "cyan": "#00CEC9",
+    "foreground": "#E2E8F0",
+    "green": "#10B981",
+    "name": "Gargantua",
+    "purple": "#8E44AD",
+    "red": "#E74C3C",
+    "selectionBackground": "#4A2810",
+    "white": "#CBD5E1",
+    "yellow": "#F59E0B"
+}
+'@ | ConvertFrom-Json
+
+if (-not ($settings.schemes | Where-Object { $_.name -eq $newScheme.name })) {
+    $settings.schemes = @($settings.schemes) + $newScheme
+}
+
 # Set background image and colorScheme
 $ps_profile | Add-Member -MemberType NoteProperty -Name backgroundImage -Value (Join-Path $HOME ".config/posh/images/gargantua-terminal-background.jpg") -Force
-$ps_profile | Add-Member -MemberType NoteProperty -Name backgroundImageOpacity -Value 0.25 -Force
-$ps_profile | Add-Member -MemberType NoteProperty -Name backgroundImageStretchMode -Value "fill" -Force
-$ps_profile | Add-Member -MemberType NoteProperty -Name colorScheme -Value "One Half Dark" -Force
+$ps_profile | Add-Member -MemberType NoteProperty -Name backgroundImageOpacity -Value 0.32 -Force
+$ps_profile | Add-Member -MemberType NoteProperty -Name backgroundImageStretchMode -Value "uniformToFill" -Force
+$ps_profile | Add-Member -MemberType NoteProperty -Name colorScheme -Value "Gargantua" -Force
 
 # Safely set defaultProfile
 $settings.defaultProfile = "$($ps_profile.guid)"
@@ -165,7 +197,11 @@ if (Test-Path $PROFILE) {
     New-Item -Path $PROFILE -Type File -Force
 }
 
-Add-Content -Path $PROFILE -Value '. "$HOME\.config\powershell\user_profile.ps1"'
+$line = '. "$HOME\.config\powershell\user_profile.ps1"'
+if (-not (Test-Path -LiteralPath $PROFILE) -or
+    -not (Get-Content -LiteralPath $PROFILE -Raw).Contains($line)) {
+    Add-Content -Path $PROFILE -Value $line
+}
 
 Write-Host "Check if Powershell User Profile exists"
 
